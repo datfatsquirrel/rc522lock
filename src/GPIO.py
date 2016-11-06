@@ -1,6 +1,6 @@
 # Add the directory "lib/rfid" to the sys.path array to make it available for Python
 import os, sys
-sys.path.append(os.path.join(os.path.dirname(__file__), "lib/rfid"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "../lib/rfid"))
 
 # Library to allow me to control the GPIO pins on the RPi
 try:
