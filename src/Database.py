@@ -16,10 +16,7 @@ def insertValues():
    print ("Opened database successfully")
    curs = conn.cursor()
  
-   curs.execute("INSERT INTO USERS (ID) VALUES (523675)")
-   curs.execute("INSERT INTO USERS (ID) VALUES (458923)")
-   curs.execute("INSERT INTO USERS (ID) VALUES (237783)")
-   curs.execute("INSERT INTO USERS (ID) VALUES (553215)")
+   curs.execute("INSERT INTO USERS (ID) VALUES (7660887599)")
    conn.commit()
  
 def query():
@@ -34,4 +31,4 @@ def query():
       print "We got nufink"
    conn.close()
 
-query()
+insertValues()
