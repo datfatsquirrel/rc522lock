@@ -13,23 +13,22 @@ except RuntimeError:
     print("Error importing RPi.GPIO")
 
 GPIO.setwarnings(False)
-   
+
 # Library for the RC522 RFID reader
 # https://github.com/mxgxw/MFRC522-python/
 try:
     import MFRC522
 except RuntimeError:
     print("Error importing MFRC522")
- 
+
 def scan():
- 
+
     # Create an object of MFRC522 which will allow me to scan for cards, read the UID of the card and authenticate it.
     reader = MFRC522.MFRC522()
- 
+
     # Loop to keep scanning for tags/cards
-    loop =  True
-    while loop:
- 
+    while True:
+
         '''
        - Send a request to the reader to scan for any present RFID cards/tags.
        - 'status' is used to verify the status of the reader (if the user has tapped a card/tag) .
@@ -38,73 +37,114 @@ def scan():
        '''
         # Check if a card is present
         (status,TagType) = reader.MFRC522_Request(reader.PICC_REQIDL)
- 
+
         # If no card is found then it will continue the loop
-	# If a card is present the program will run this if statement
+	    # If a card is present the program will run this if statement
         if status == reader.MI_OK:
- 
+
             # Read the UID of the card, ready to query the database.
             (status,uid) = reader.MFRC522_Anticoll()
-	    print uid
+    	    print uid
 
-	    # Take the values in 'uid' list and concatenate into a string for database query
-	    uidStr = ""
-	    for number in uid:
-	        uidStr = uidStr + str(number)
-	    print int(uidStr)
-	    
-	    isValid = queryUID(uidStr)
-	    
-	    if isValid == True:
-	    	# Change the state of the door to it's opposite state
-	    	operateDoor()
-	    
-	    	state = GPIO.input(3)
-	    	if state == 0:
-	    	    # Delay to scan after 2 seconds to see if the RFID signal is still present
-	    	    time.sleep(2)
+    	    # Take the values in 'uid' list and concatenate into a string for database query
+    	    uidStr = ""
+    	    for number in uid:
+    	        uidStr = uidStr + str(number)
+    	    print int(uidStr)
 
-	    	    # Take the current time (seconds since Jan 1st 1970) and store as a temp value
-	    	    tempTimeVal = time.time()
-	    
-	    	    # Set the default mode to lock automatically after the door is unlocked
-	    	    changeState = True
+            if uidStr == "832874716283":
+                masterCard()
 
-	    	    # Create a loop which runs for 0.5 seconds to scan for RFID signals
-	    	    while (time.time() - tempTimeVal) < 0.5:
-	    	    	(status,TagType) = reader.MFRC522_Request(reader.PICC_REQIDL)
-	    	    
-		    	# Check if card is still present
-		    	if status == reader.MI_OK:
-		    
-		    	    # Set the door to stay unlocked once originally unlocked
-		    	    changeState = False
-	    
-	    	    # Automatically lock the door if changeState is it's default value (True)
-	    	    if changeState == True:
-		        operateDoor()
+            else:
+                isValid = queryUID(uidStr)
+
+        	    if isValid == True:
+        	    	# Change the state of the door to it's opposite state
+        	    	operateDoor()
+
+        	    	state = GPIO.input(3)
+        	    	if state == 0:
+        	    	    # Delay to scan after 2 seconds to see if the RFID signal is still present
+        	    	    time.sleep(2)
+
+        	    	    # Take the current time (seconds since Jan 1st 1970) and store as a temp value
+        	    	    tempTimeVal = time.time()
+
+        	    	    # Set the default mode to lock automatically after the door is unlocked
+        	    	    changeState = True
+
+        	    	    # Create a loop which runs for 0.5 seconds to scan for RFID signals
+        	    	    while (time.time() - tempTimeVal) < 0.5:
+        	    	    	(status,TagType) = reader.MFRC522_Request(reader.PICC_REQIDL)
+
+        		    	# Check if card is still present
+        		    	if status == reader.MI_OK:
+
+        		    	    # Set the door to stay unlocked once originally unlocked
+        		    	    changeState = False
+
+        	    	    # Automatically lock the door if changeState is it's default value (True)
+        	    	    if changeState == True:
+        		        operateDoor()
 
 	    # Delay for 3 seconds before the script can be run again
 	    time.sleep(3)
- 
+
 def queryUID(id):
-   
+
     # Connect to the user database
     conn = sqlite3.connect(dbDir)
     curs = conn.cursor()
     returnValue = curs.execute("SELECT id from USERS where id = "+id).fetchone()
     conn.close()
     if returnValue is not None:
-	return True
+        return True
     else:
-	return False
+        return False
+
+def masterCard():
+    time.sleep(2)
+    while True
+        (status,TagType) = reader.MFRC522_Request(reader.PICC_REQIDL)
+        if status == reader.MI_OK:
+            (status,uid) = reader.MFRC522_Anticoll()
+            uidStr = ""
+    	    for number in uid:
+    	        uidStr = uidStr + str(number)
+    	    print int(uidStr)
+            if uidStr == "432432352523324343":
+                return
+            else:
+                # Connect to the user database
+                conn = sqlite3.connect(dbDir)
+                curs = conn.cursor()
+                returnValue = curs.execute("SELECT id from USERS where id = "+uidStr).fetchone()
+                conn.close()
+                if returnValue is not None:
+                    removeUID(uidStr)
+                    return
+                else:
+                    addUID(uidStr)
+                    return
+
+def addUID(id):
+    conn = sqlite3.connect(dbDir)
+    curs = conn.cursor()
+    curs.execute("INSERT INTO USERS VALUES ("+id+")")
+    conn.close()
+
+def removeID(id):
+    conn = sqlite3.connect(dbDir)
+    curs = conn.cursor()
+    curs.execute("DELETE FROM USERS WHERE id = "+id)
+    conn.close()
 
 def operateDoor():
     GPIO.setup(3, GPIO.OUT)
     state = GPIO.input(3)
     if state == 0:
-	GPIO.output(3, GPIO.HIGH)
+	    GPIO.output(3, GPIO.HIGH)
     elif state == 1:
-	GPIO.output(3, GPIO.LOW)
+        GPIO.output(3, GPIO.LOW)
 
 scan()
