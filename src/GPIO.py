@@ -58,37 +58,37 @@ def scan():
             else:
                 isValid = queryUID(uidStr)
 
-        	    if isValid == True:
-        	    	# Change the state of the door to it's opposite state
-        	    	operateDoor()
+        	if isValid == True:
+        	    # Change the state of the door to it's opposite state
+        	    operateDoor()
 
-        	    	state = GPIO.input(3)
-        	    	if state == 0:
-        	    	    # Delay to scan after 2 seconds to see if the RFID signal is still present
-        	    	    time.sleep(2)
+        	    state = GPIO.input(3)
+        	    if state == 0:
+        	    	# Delay to scan after 2 seconds to see if the RFID signal is still present
+        	    	time.sleep(2)
 
-        	    	    # Take the current time (seconds since Jan 1st 1970) and store as a temp value
-        	    	    tempTimeVal = time.time()
+        	    	# Take the current time (seconds since Jan 1st 1970) and store as a temp value
+        	    	tempTimeVal = time.time()
 
-        	    	    # Set the default mode to lock automatically after the door is unlocked
-        	    	    changeState = True
+        	    	# Set the default mode to lock automatically after the door is unlocked
+        	    	changeState = True
 
-        	    	    # Create a loop which runs for 0.5 seconds to scan for RFID signals
-        	    	    while (time.time() - tempTimeVal) < 0.5:
-        	    	    	(status,TagType) = reader.MFRC522_Request(reader.PICC_REQIDL)
+        	    	# Create a loop which runs for 0.5 seconds to scan for RFID signals
+        	    	while (time.time() - tempTimeVal) < 0.5:
+        	    	    (status,TagType) = reader.MFRC522_Request(reader.PICC_REQIDL)
 
-        		    	# Check if card is still present
-        		    	if status == reader.MI_OK:
+        		    # Check if card is still present
+        		    if status == reader.MI_OK:
 
-        		    	    # Set the door to stay unlocked once originally unlocked
-        		    	    changeState = False
+        		    	# Set the door to stay unlocked once originally unlocked
+        		    	changeState = False
 
-        	    	    # Automatically lock the door if changeState is it's default value (True)
-        	    	    if changeState == True:
-        		        operateDoor()
+        	    	# Automatically lock the door if changeState is it's default value (True)
+        	    	if changeState == True:
+        		    operateDoor()
 
-	    # Delay for 3 seconds before the script can be run again
-	    time.sleep(3)
+	# Delay for 3 seconds before the script can be run again
+	time.sleep(3)
 
 def queryUID(id):
 
