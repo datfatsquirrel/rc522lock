@@ -52,7 +52,7 @@ def scan():
     	        uidStr = uidStr + str(number)
     	    print int(uidStr)
 
-            if uidStr == "832874716283":
+            if uidStr == "7660887599":
                 masterCard()
 
             else:
@@ -112,7 +112,7 @@ def masterCard():
     	    for number in uid:
     	        uidStr = uidStr + str(number)
     	    print int(uidStr)
-            if uidStr == "432432352523324343":
+            if uidStr == "7660887599":
                 return
             else:
                 # Connect to the user database
