@@ -87,8 +87,8 @@ def scan():
         	    	if changeState == True:
         		    operateDoor()
 
-	# Delay for 3 seconds before the script can be run again
-	
+        # Delay for 3 seconds before the script can be run again
+	    time.sleep(3)
 
 def queryUID(id):
 
