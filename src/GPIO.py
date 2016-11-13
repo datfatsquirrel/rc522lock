@@ -114,7 +114,7 @@ def masterCard():
     	        uidStr = uidStr + str(number)
     	    print int(uidStr)
             if uidStr == "7660887599":
-                return
+                print "same tag"
             else:
                 # Connect to the user database
                 conn = sqlite3.connect(dbDir)
@@ -122,23 +122,9 @@ def masterCard():
                 returnValue = curs.execute("SELECT id from USERS where id = "+uidStr).fetchone()
                 conn.close()
                 if returnValue is not None:
-                    removeUID(uidStr)
-                    return
+                    print "Remove."
                 else:
-                    addUID(uidStr)
-                    return
-
-def addUID(id):
-    conn = sqlite3.connect(dbDir)
-    curs = conn.cursor()
-    curs.execute("INSERT INTO USERS VALUES ("+id+")")
-    conn.close()
-
-def removeID(id):
-    conn = sqlite3.connect(dbDir)
-    curs = conn.cursor()
-    curs.execute("DELETE FROM USERS WHERE id = "+id)
-    conn.close()
+                    print "Add."
 
 def operateDoor():
     GPIO.setup(3, GPIO.OUT)
