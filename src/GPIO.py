@@ -103,7 +103,8 @@ def queryUID(id):
         return False
 
 def masterCard():
-    time.sleep(2)
+    time.sleep(1)
+    reader = MFRC522.MFRC522()
     while True:
         (status,TagType) = reader.MFRC522_Request(reader.PICC_REQIDL)
         if status == reader.MI_OK:
