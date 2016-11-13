@@ -65,7 +65,7 @@ def scan():
         	    state = GPIO.input(3)
         	    if state == 0:
         	    	# Delay to scan after 2 seconds to see if the RFID signal is still present
-        	    	time.sleep(2)
+
 
         	    	# Take the current time (seconds since Jan 1st 1970) and store as a temp value
         	    	tempTimeVal = time.time()
@@ -88,7 +88,7 @@ def scan():
         		    operateDoor()
 
 	# Delay for 3 seconds before the script can be run again
-	time.sleep(3)
+	
 
 def queryUID(id):
 
@@ -103,7 +103,7 @@ def queryUID(id):
         return False
 
 def masterCard():
-    time.sleep(1)
+
     reader = MFRC522.MFRC522()
     while True:
         (status,TagType) = reader.MFRC522_Request(reader.PICC_REQIDL)
