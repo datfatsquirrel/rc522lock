@@ -1,7 +1,7 @@
 # 1. Add the directory "lib/rfid" to the sys.path array to make it available for Python
 # 2. Create a variable with the path for the userDB database
 import os, sys
-sys.path.append(os.path.join(os.path.dirname(__file__), "../lib/MFRC522-python"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "../lib/rfid"))
 dbDir = os.path.join(os.path.dirname(__file__), "../resources/userDB.db")
 
 import time, sqlite3
