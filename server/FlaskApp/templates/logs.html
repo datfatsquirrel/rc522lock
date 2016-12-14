@@ -1,19 +1,21 @@
 {% extends "layout.html" %}
 {% block content %}
 	<div class="back_button">
-		<a href="index.html"><<< Home</a>
+		<a href="{{ url_for('index') }}"><<< Home</a>
 	</div>
-	
+
 	<div class="main_logs">
 		<table>
 			<tr>
 				<th>UID</th>
 				<th>Time</th>
 			</tr>
+			{% for index in range(0, listLen) %}
 			<tr>
-				<td>hi</td>
-				<td>there</td>
+				<td>{{ uids[index] }}</td>
+				<td>{{ times[index] }}</td>
 			</tr>
+			{% endfor %}
 		</table>
 	</div>
 {% endblock %}

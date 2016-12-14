@@ -9,11 +9,19 @@ def index():
 							title = 'RFID Door Lock')
 @app.route('/logs')
 def logs():
-	conn = sqlite3.connect('logs.db')
+	conn = sqlite3.connect('data.db')
+	conn.text_factory = str
 	curs = conn.cursor()
-	data = curs.execute(''' SELECT * from USERS''')
-	return render_template('logs.html'
-							title = 'View Logs')
+	uids = curs.execute(''' SELECT uid from logs''').fetchall()
+	times = curs.execute(''' SELECT time from logs''').fetchall()
+	uids = list(uids)
+	times = list(times)
+	listLen = len(uids)
+	return render_template('logs.html',
+							title = 'View Logs',
+							uids = uids,
+							times = times,
+							listLen = listLen)
 
 if __name__ == '__main__':
 	app.run(debug=True)

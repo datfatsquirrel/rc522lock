@@ -12,16 +12,6 @@ header {
 	text-align: center;
 }
 
-/*nav ul {
-	list-style: none;
-	padding: 0;
-}
-
-nav ul li {
-	display: inline-block;
-	width: 25%;
-}*/
-
 .clearfix {
 	margin: 200px 0;
 }
@@ -55,7 +45,7 @@ nav ul li {
 .clearfix a:hover {
 	background-color: #d3d3d3;
 }
-	
+
 .back_button {
 	text-align: center;
 	font-size: 18px;
