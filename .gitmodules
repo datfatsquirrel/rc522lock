@@ -1,0 +1,6 @@
+[submodule "lib/SPI-Py"]
+	path = lib/SPI-Py
+	url = https://github.com/lthiery/SPI-Py
+[submodule "lib/MFRC522-python"]
+	path = lib/MFRC522-python
+	url = https://github.com/mxgxw/MFRC522-python
