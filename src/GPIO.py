@@ -65,7 +65,7 @@ def scan():
         	    state = GPIO.input(3)
         	    if state == 0:
     	    	    # Delay to scan after 2 seconds to see if the RFID signal is still present
-                    time.sleep(2)
+                        time.sleep(2)
 
         	    	# Take the current time (seconds since Jan 1st 1970) and store as a temp value
         	    	tempTimeVal = time.time()
@@ -104,7 +104,8 @@ def queryUID(id):
 
 def masterCard():
     reader = MFRC522.MFRC522()
-    while True:
+    continueLoop = True
+    while continueLoop == True:
         (status,TagType) = reader.MFRC522_Request(reader.PICC_REQIDL)
         if status == reader.MI_OK:
             (status,uid) = reader.MFRC522_Anticoll()
@@ -113,17 +114,34 @@ def masterCard():
     	        uidStr = uidStr + str(number)
     	    print int(uidStr)
             if uidStr == "7660887599":
-                continueLoop
+                continueLoop = False
             else:
                 # Connect to the user database
                 conn = sqlite3.connect(dbDir)
                 curs = conn.cursor()
                 returnValue = curs.execute("SELECT id from USERS where id = "+uidStr).fetchone()
+                print returnValue
                 conn.close()
                 if returnValue is not None:
                     print "Remove."
+                    rmUID(uidStr)
+                    continueLoop = False
                 else:
                     print "Add."
+                    addUID(uidStr)
+                    continueLoop = False
+
+def addUID(id):
+    conn = sqlite3.connect(dbDir)
+    curs = conn.cursor()
+    curs.execute("INSERT INTO USERS VALUES ("+id)
+    conn.close()
+
+def rmUID(id):
+    conn = sqlite3.connect(dbDir)
+    curs = conn.cursor()
+    curs.execute("DELETE FROM USERS WHERE id = "+id)
+    conn.close()
 
 def operateDoor():
     GPIO.setup(3, GPIO.OUT)
