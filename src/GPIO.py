@@ -2,7 +2,7 @@
 # 2. Create a variable with the path for the userDB database
 import os, sys
 sys.path.append(os.path.join(os.path.dirname(__file__), "../lib/MFRC522-python"))
-dbDir = os.path.join(os.path.dirname(__file__), "../resources/userDB.db")
+dbDir = os.path.join(os.path.dirname(__file__), "../resources/main.db")
 
 import time, sqlite3
 
