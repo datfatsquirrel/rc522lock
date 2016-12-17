@@ -102,6 +102,7 @@ def queryUID(id):
         return False
 
 def masterCard():
+    print "Master card activated."
     reader = MFRC522.MFRC522()
     continueLoop = True
     while continueLoop == True:
@@ -129,6 +130,7 @@ def masterCard():
                     print "Add."
                     addUID(uidStr)
                     continueLoop = False
+    print "Master card activated."
 
 def addUID(id):
     conn = sqlite3.connect(dbDir)
