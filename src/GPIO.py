@@ -44,7 +44,6 @@ def scan():
 
             # Read the UID of the card, ready to query the database.
             (status,uid) = reader.MFRC522_Anticoll()
-    	    print uid
 
     	    # Take the values in 'uid' list and concatenate into a string for database query
     	    uidStr = ""
@@ -134,13 +133,13 @@ def masterCard():
 def addUID(id):
     conn = sqlite3.connect(dbDir)
     curs = conn.cursor()
-    curs.execute("INSERT INTO USERS VALUES ("+id)
+    curs.execute("INSERT INTO USERS VALUES ("+id+")")
     conn.close()
 
 def rmUID(id):
     conn = sqlite3.connect(dbDir)
     curs = conn.cursor()
-    curs.execute("DELETE FROM USERS WHERE id = "+id)
+    curs.execute("DELETE FROM USERS WHERE id = "+id+")")
     conn.close()
 
 def operateDoor():
