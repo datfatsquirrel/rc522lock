@@ -31,4 +31,5 @@ def query():
       print "We got nufink"
    conn.close()
 
+createDatabase()
 insertValues()
