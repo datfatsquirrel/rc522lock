@@ -151,11 +151,11 @@ def operateDoor(id):
     if state == 0:
         status = False
 	    GPIO.output(3, GPIO.HIGH)
-        logTime(opened, id)
+        logTime(status, id)
     elif state == 1:
         status = True
         GPIO.output(3, GPIO.LOW)
-        logTime(opened, id)
+        logTime(status, id)
 
 def logTime(status, id):
     currentTime = strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime())
