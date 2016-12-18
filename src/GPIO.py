@@ -135,13 +135,15 @@ def masterCard():
 def addUID(id):
     conn = sqlite3.connect(dbDir)
     curs = conn.cursor()
-    print "INSERT INTO USERS (ID) VALUES ("+id+")"
+    curs.execute("INSERT INTO USERS (ID) VALUES ("+id+")")
+    conn.commit()
     conn.close()
 
 def rmUID(id):
     conn = sqlite3.connect(dbDir)
     curs = conn.cursor()
     curs.execute("DELETE FROM USERS WHERE id = "+id)
+    conn.commit()
     conn.close()
 
 def operateDoor():
