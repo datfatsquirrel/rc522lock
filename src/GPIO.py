@@ -158,10 +158,10 @@ def operateDoor(id):
         logTime(opened, id)
 
 def logTime(status, id):
-    currentTime = strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime()
+    currentTime = strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime())
     conn = sqlite3.connect(dbDir)
     curs = conn.cursor()
-    print status + id + currentTimepytho
+    print status + id + currentTime
     curs.execute("INSERT INTO LOGS (UID, TIME, STATUS) VALUES ("+id+", "+currentTime+", "+status+")")
 
 scan()
