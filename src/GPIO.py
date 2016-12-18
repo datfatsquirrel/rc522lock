@@ -90,11 +90,10 @@ def scan():
 	    time.sleep(2)
 
 def queryUID(id):
-
     # Connect to the user database
     conn = sqlite3.connect(dbDir)
     curs = conn.cursor()
-    returnValue = curs.execute("SELECT id from USERS where id = "+id).fetchone()
+    returnValue = curs.execute("SELECT ID FROM USERS WHERE ID = "+id).fetchone()
     conn.close()
     if returnValue is not None:
         return True
