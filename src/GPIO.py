@@ -130,18 +130,18 @@ def masterCard():
                     print "Add."
                     addUID(uidStr)
                     continueLoop = False
-    print "Master card activated."
+    print "Master card deactivated."
 
 def addUID(id):
     conn = sqlite3.connect(dbDir)
     curs = conn.cursor()
-    curs.execute("INSERT INTO USERS VALUES ("+id+")")
+    curs.execute("INSERT INTO USERS (ID) VALUES ("+id+")")
     conn.close()
 
 def rmUID(id):
     conn = sqlite3.connect(dbDir)
     curs = conn.cursor()
-    curs.execute("DELETE FROM USERS WHERE id = "+id+")")
+    curs.execute("DELETE FROM USERS WHERE id = "+id)
     conn.close()
 
 def operateDoor():
