@@ -59,7 +59,7 @@ def scan():
 
         	if isValid == True:
         	    # Change the state of the door to it's opposite state
-        	    operateDoor()
+        	    operateDoor(uidStr)
 
         	    state = GPIO.input(3)
         	    if state == 0:
