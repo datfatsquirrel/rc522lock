@@ -135,7 +135,7 @@ def masterCard():
 def addUID(id):
     conn = sqlite3.connect(dbDir)
     curs = conn.cursor()
-    curs.execute("INSERT INTO USERS (ID) VALUES ("+id+")")
+    print "INSERT INTO USERS (ID) VALUES ("+id+")"
     conn.close()
 
 def rmUID(id):
