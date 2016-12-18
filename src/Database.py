@@ -1,13 +1,15 @@
 import sqlite3, os
 
-databasePath = os.path.join(os.path.dirname(__file__), "../resources/userDB.db")
+databasePath = os.path.join(os.path.dirname(__file__), "../resources/main.db")
 
 def createDatabase():
    conn = sqlite3.connect(databasePath)
    print ("Opened database successfully")
 
-   conn.execute('''CREATE TABLE USERS
-         (ID INT PRIMARY KEY     NOT NULL);''')
+   conn.execute("CREATE TABLE USERS (ID INT PRIMARY KEY);")
+   print ("Table created successfully")
+
+   conn.execute("CREATE TABLE LOGS (UID TEXT, TIME TEXT, STATUS TEXT);")
    print ("Table created successfully")
    conn.close()
 
@@ -42,4 +44,4 @@ def query():
       print "We got nufink"
    conn.close()
 
-createTable()
+createDatabase()

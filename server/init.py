@@ -12,8 +12,8 @@ def logs():
 	conn = sqlite3.connect('main.db')
 	conn.text_factory = str
 	curs = conn.cursor()
-	uids = curs.execute(''' SELECT uid from logs''').fetchall()
-	times = curs.execute(''' SELECT time from logs''').fetchall()
+	uids = curs.execute(''' SELECT UID FROM LOGS''').fetchall()
+	times = curs.execute(''' SELECT TIME FROM LOGS''').fetchall()
 	listLen = len(uids)
 	return render_template('logs.html', title = 'View Logs', uids = uids, times = times, listLen = listLen)
 
