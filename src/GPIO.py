@@ -3,9 +3,8 @@
 import os, sys
 sys.path.append(os.path.join(os.path.dirname(__file__), "../lib/MFRC522-python"))
 dbDir = os.path.join(os.path.dirname(__file__), "../resources/main.db")
-
-import time, sqlite3
-
+from time import sleep, gmtime, strftime
+import sqlite3
 # Library to allow me to control the GPIO pins on the RPi
 try:
     import RPi.GPIO as GPIO
