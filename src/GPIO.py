@@ -148,11 +148,11 @@ def operateDoor(id):
     GPIO.setup(3, GPIO.OUT)
     state = GPIO.input(3)
     if state == 0:
-        status = False
+        status = "Locked"
         GPIO.output(3, GPIO.HIGH)
         logTime(status, id)
     elif state == 1:
-        status = True
+        status = "Unlocked"
         GPIO.output(3, GPIO.LOW)
         logTime(status, id)
 
