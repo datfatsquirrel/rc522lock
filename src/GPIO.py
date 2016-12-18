@@ -150,7 +150,7 @@ def operateDoor(id):
     state = GPIO.input(3)
     if state == 0:
         status = False
-	    GPIO.output(3, GPIO.HIGH)
+	GPIO.output(3, GPIO.HIGH)
         logTime(status, id)
     elif state == 1:
         status = True
