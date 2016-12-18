@@ -11,6 +11,17 @@ def createDatabase():
    print ("Table created successfully")
    conn.close()
 
+def createTable():
+   conn = sqlite3.connect(databasePath)
+   print ("Opened database successfully")
+
+   conn.execute('''CREATE TABLE LOGS
+         (UID TEXT
+          TIME TEXT
+          STATUS TEXT);''')
+   print ("Table created successfully")
+   conn.close()
+
 def insertValues():
    conn = sqlite3.connect(databasePath)
    print ("Opened database successfully")
@@ -31,5 +42,4 @@ def query():
       print "We got nufink"
    conn.close()
 
-createDatabase()
-insertValues()
+createTable()

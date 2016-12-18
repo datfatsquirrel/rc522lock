@@ -84,7 +84,7 @@ def scan():
 
         	    	# Automatically lock the door if changeState is it's default value (True)
         	    	if changeState == True:
-        		    operateDoor()
+        		    operateDoor(uidStr)
 
         # Delay for 3 seconds before the script can be run again
 	    time.sleep(2)
@@ -145,12 +145,23 @@ def rmUID(id):
     conn.commit()
     conn.close()
 
-def operateDoor():
+def operateDoor(id):
     GPIO.setup(3, GPIO.OUT)
     state = GPIO.input(3)
     if state == 0:
+        status = False
 	    GPIO.output(3, GPIO.HIGH)
+        logTime(opened, id)
     elif state == 1:
+        status = True
         GPIO.output(3, GPIO.LOW)
+        logTime(opened, id)
+
+def logTime(status, id):
+    currentTime = strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime()
+    conn = sqlite3.connect(dbDir)
+    curs = conn.cursor()
+    print status + id + currentTimepytho
+    curs.execute("INSERT INTO LOGS (UID, TIME, STATUS) VALUES ("+id+", "+currentTime+", "+status+")")
 
 scan()
