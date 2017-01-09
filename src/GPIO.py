@@ -1,44 +1,36 @@
-# 1. Add the directory "lib/rfid" to the sys.path array to make it available for Python
-# 2. Create a variable with the path for the userDB database
 import os, sys
+# Add the directory "lib/rfid" to the sys.path array to make it available for Python
 sys.path.append(os.path.join(os.path.dirname(__file__), "../lib/MFRC522-python"))
+# Create a variable with the path for the userDB database
 dbDir = os.path.join(os.path.dirname(__file__), "../resources/main.db")
+
+# Allows me to create delays and get the current time when gathering data for database
 from time import sleep, gmtime, strftime
+
 import sqlite3
-# Library to allow me to control the GPIO pins on the RPi
-try:
-    import RPi.GPIO as GPIO
-except RuntimeError:
-    print("Error importing RPi.GPIO")
+
+# Library to control GPIO board
+import RPi.GPIO as GPIO
 
 GPIO.setwarnings(False)
 
 # Library for the RC522 RFID reader
 # https://github.com/mxgxw/MFRC522-python/
-try:
-    import MFRC522
-except RuntimeError:
-    print("Error importing MFRC522")
+import MFRC522
 
 def scan():
 
-    # Create an object of MFRC522 which will allow me to scan for cards, read the UID of the card and authenticate it.
+    # Create an object of MFRC522 - allows me to scan for cards, read the UID of the card and authenticate it
     reader = MFRC522.MFRC522()
 
     # Loop to keep scanning for tags/cards
     while True:
 
-        '''
-       - Send a request to the reader to scan for any present RFID cards/tags.
-       - 'status' is used to verify the status of the reader (if the user has tapped a card/tag) .
-       - 'TagType' is used to validate that the present card/tag is a MIFARE card.
-       - This variable doesn't have to be used as it would only be used to warn the user, however because there is no console for the user there is not much need for this.
-       '''
-        # Check if a card is present
+        # Sends a request to the reader to see if a card is present
         (status,TagType) = reader.MFRC522_Request(reader.PICC_REQIDL)
 
         # If no card is found then it will continue the loop
-	    # If a card is present the program will run this if statement
+	# If a card is present the program will run the following 'if' statement
         if status == reader.MI_OK:
 
             # Read the UID of the card, ready to query the database.
