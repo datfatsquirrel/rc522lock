@@ -31,7 +31,7 @@ def scan():
         (status,TagType) = reader.MFRC522_Request(reader.PICC_REQIDL)
 
         # If no card is found then it will continue the loop
-	# If a card is present the program will run the following 'if' statement
+	    # If a card is present the program will run the following 'if' statement
         if status == reader.MI_OK:
 
             # Read the UID of the card, ready to query the database.
