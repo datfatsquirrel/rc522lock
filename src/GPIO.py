@@ -7,6 +7,7 @@ dbDir = os.path.join(os.path.dirname(__file__), "../resources/main.db")
 # Allows me to create delays and get the current time when gathering data for database
 from time import sleep, gmtime, strftime
 
+# Database library
 import sqlite3
 
 # Library to control GPIO board
