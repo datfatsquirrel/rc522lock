@@ -77,7 +77,23 @@ def scan():
         	    	# Automatically lock the door if changeState is it's default value (True)
         	    	if changeState == True:
         		    operateDoor(uidStr)
-
+            else
+                GPIO.setmode(GPIO.BCM)
+                GPIO.output(13, GPIO.HIGH)
+                time.sleep(0.1)
+                GPIO.output(13, GPIO.LOW)
+                time.sleep(0.1)
+                GPIO.output(13, GPIO.HIGH)
+                time.sleep(0.1)
+                GPIO.output(13, GPIO.LOW)
+                time.sleep(0.1)
+                GPIO.output(13, GPIO.HIGH)
+                time.sleep(0.1)
+                GPIO.output(13, GPIO.LOW)
+                time.sleep(0.1)
+                GPIO.output(13, GPIO.HIGH)
+                time.sleep(0.1)
+                GPIO.output(13, GPIO.LOW)
         # Delay for 3 seconds before the script can be run again
 	    time.sleep(2)
 
