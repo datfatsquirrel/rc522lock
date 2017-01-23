@@ -12,10 +12,12 @@ def logs():
 	conn = sqlite3.connect('main.db')
 	conn.text_factory = str
 	curs = conn.cursor()
-	uids = curs.execute(''' SELECT UID FROM LOGS''').fetchall()
-	times = curs.execute(''' SELECT TIME FROM LOGS''').fetchall()
+	uids = curs.execute("SELECT UID FROM LOGS").fetchall()
+	times = curs.execute("SELECT TIME FROM LOGS").fetchall()
+	status = curs.execute("SELECT STATUS FROM LOGS")
+	success = curs.execute("SELECT SUCCESS FROM LOGS")
 	listLen = len(uids)
-	return render_template('logs.html', title = 'View Logs', uids = uids, times = times, listLen = listLen)
+	return render_template('logs.html', title = 'View Logs', uids = uids, times = times, status = status, success = success, listLen = listLen)
 
 if __name__ == '__main__':
-	app.run(debug=True)
+	app.run(debug=True, host="0.0.0.0")

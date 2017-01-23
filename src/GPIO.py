@@ -20,13 +20,11 @@ GPIO.setwarnings(False)
 import MFRC522
 
 def scan():
-
     # Create an object of MFRC522 - allows me to scan for cards, read the UID of the card and authenticate it
     reader = MFRC522.MFRC522()
 
     # Loop to keep scanning for tags/cards
     while True:
-
         # Sends a request to the reader to see if a card is present
         (status,TagType) = reader.MFRC522_Request(reader.PICC_REQIDL)
 
@@ -44,12 +42,20 @@ def scan():
     	    print int(uidStr)
 
             if uidStr == "7660887599":
+                # Tag was master card
+                success = "Master card"
                 time.sleep(2)
                 masterCard()
             else:
                 isValid = queryUID(uidStr)
 
         	if isValid == True:
+                # Tag was valid
+                success = "True"
+
+                # Log the time at which the tag was used
+                logTime(status, id, success)
+
         	    # Change the state of the door to it's opposite state
         	    operateDoor(uidStr)
 
@@ -78,22 +84,22 @@ def scan():
         	    	if changeState == True:
         		    operateDoor(uidStr)
             else
+                # Tag was invalid
+                success = "False"
                 GPIO.setmode(GPIO.BCM)
-                GPIO.output(13, GPIO.HIGH)
-                time.sleep(0.1)
-                GPIO.output(13, GPIO.LOW)
-                time.sleep(0.1)
-                GPIO.output(13, GPIO.HIGH)
-                time.sleep(0.1)
-                GPIO.output(13, GPIO.LOW)
-                time.sleep(0.1)
-                GPIO.output(13, GPIO.HIGH)
-                time.sleep(0.1)
-                GPIO.output(13, GPIO.LOW)
-                time.sleep(0.1)
-                GPIO.output(13, GPIO.HIGH)
-                time.sleep(0.1)
-                GPIO.output(13, GPIO.LOW)
+
+                # Get the current status of the door so after the LED has flashed it can return to its original status
+                locked = GPIO.input(GPIO.13)
+                flash = 3
+
+                # Flash the red LED to indicate a failed attempt
+                while flash != 0
+                    GPIO.output(13, GPIO.HIGH)
+                    time.sleep(0.1)
+                    GPIO.output(13, GPIO.LOW)
+                    time.sleep(0.1)
+                if locked == 1
+                    GPIO.output(13, GPIO.HIGH)
         # Delay for 3 seconds before the script can be run again
 	    time.sleep(2)
 
@@ -101,8 +107,12 @@ def queryUID(id):
     # Connect to the user database
     conn = sqlite3.connect(dbDir)
     curs = conn.cursor()
+
+    # Check if the UID exists in the database
     returnValue = curs.execute("SELECT ID FROM USERS WHERE ID = "+id).fetchone()
     conn.close()
+
+    # Returns true if valid, false if invalid
     if returnValue is not None:
         return True
     else:
@@ -110,6 +120,11 @@ def queryUID(id):
 
 def masterCard():
     print "Master card activated."
+    GPIO.setmode(GPIO.BCM)
+    GPIO.output(13, GPIO.HIGH)
+    GPIO.output(26, GPIO.LOW)
+
+    # See comments between line 24 and 44
     reader = MFRC522.MFRC522()
     continueLoop = True
     while continueLoop == True:
@@ -120,19 +135,27 @@ def masterCard():
     	    for number in uid:
     	        uidStr = uidStr + str(number)
     	    print int(uidStr)
+
+            # If the master card is used again, exit the administrative mode
             if uidStr == "7660887599":
                 continueLoop = False
             else:
                 # Connect to the user database
                 conn = sqlite3.connect(dbDir)
                 curs = conn.cursor()
-                returnValue = curs.execute("SELECT id from USERS where id = "+uidStr).fetchone()
+
+                # Check if the UID is in the database
+                returnValue = curs.execute("SELECT ID FROM USERS WHERE ID = "+uidStr).fetchone()
                 print returnValue
                 conn.close()
+
+                # If the UID is in the database, remove it
                 if returnValue is not None:
                     print "Remove."
                     rmUID(uidStr)
                     continueLoop = False
+
+                # If the UID is not in the database, add it
                 else:
                     print "Add."
                     addUID(uidStr)
@@ -140,15 +163,21 @@ def masterCard():
     print "Master card deactivated."
 
 def addUID(id):
+    # Connect to the database
     conn = sqlite3.connect(dbDir)
     curs = conn.cursor()
+
+    # Insert the UID into the database
     curs.execute("INSERT INTO USERS (ID) VALUES ("+id+")")
     conn.commit()
     conn.close()
 
 def rmUID(id):
+    # Connect to the database
     conn = sqlite3.connect(dbDir)
     curs = conn.cursor()
+
+    # Remove the UID from the database
     curs.execute("DELETE FROM USERS WHERE id = "+id)
     conn.commit()
     conn.close()
@@ -156,20 +185,31 @@ def rmUID(id):
 def operateDoor(id):
     GPIO.setup(3, GPIO.OUT)
     state = GPIO.input(3)
+
+    # Lock door, turn green LED off and red LED on
     if state == 0:
-        status = "Locked"
+        GPIO.output(26, GPIO.LOW)
+        GPIO.output(13, GPIO.HIGH)
         GPIO.output(3, GPIO.HIGH)
-        logTime(status, id)
+        logTime(status, id, success)
+
+    # Unlock door, turn green LED on and red LED off
     elif state == 1:
-        status = "Unlocked"
+        GPIO.output(26, GPIO.HIGH)
+        GPIO.output(13, GPIO.LOW)
         GPIO.output(3, GPIO.LOW)
-        logTime(status, id)
+        logTime(status, id, success)
 
 def logTime(status, id):
-    currentTime = strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime())
+    # Get the current time and date as a string
+    currentTime = strftime("%a, %d %b %Y %H:%M:%S", gmtime())
+
+    # Connect to the database
     conn = sqlite3.connect(dbDir)
     curs = conn.cursor()
     print status + id + currentTime
-    curs.execute("INSERT INTO LOGS (UID, TIME, STATUS) VALUES ("+id+", "+currentTime+", "+status+")")
+
+    # Insert UID, time and status of the door into database
+    curs.execute("INSERT INTO LOGS (UID, TIME, STATUS, SUCCESS) VALUES ("+id+", "+currentTime+", "+status+", "+success+")")
 
 scan()
