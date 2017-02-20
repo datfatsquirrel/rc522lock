@@ -86,9 +86,9 @@ def scan():
             else
                 # Tag was invalid
                 success = "False"
-                GPIO.setmode(GPIO.BCM)
 
                 # Get the current status of the door so after the LED has flashed it can return to its original status
+                GPIO.setmode(GPIO.BCM)
                 locked = GPIO.input(GPIO.13)
                 flash = 3
 
@@ -100,6 +100,7 @@ def scan():
                     time.sleep(0.1)
                 if locked == 1
                     GPIO.output(13, GPIO.HIGH)
+
         # Delay for 3 seconds before the script can be run again
 	    time.sleep(2)
 
@@ -120,9 +121,11 @@ def queryUID(id):
 
 def masterCard():
     print "Master card activated."
+
+    # Turn both green and red LEDs on to indicate that the Master card has been used
     GPIO.setmode(GPIO.BCM)
     GPIO.output(13, GPIO.HIGH)
-    GPIO.output(26, GPIO.LOW)
+    GPIO.output(26, GPIO.HIGH)
 
     # See comments between line 24 and 44
     reader = MFRC522.MFRC522()
@@ -138,6 +141,15 @@ def masterCard():
 
             # If the master card is used again, exit the administrative mode
             if uidStr == "7660887599":
+                state = GPIO.input(3)
+
+                # Change LEDs back to original state
+                if state == 0:
+                    GPIO.output(26, GPIO.LOW)
+                    GPIO.output(13, GPIO.HIGH)
+                elif state == 1:
+                    GPIO.output(26, GPIO.HIGH)
+                    GPIO.output(13, GPIO.LOW)
                 continueLoop = False
             else:
                 # Connect to the user database
@@ -183,6 +195,7 @@ def rmUID(id):
     conn.close()
 
 def operateDoor(id):
+    GPIO.setmode(GPIO.BCM)
     GPIO.setup(3, GPIO.OUT)
     state = GPIO.input(3)
 
@@ -202,7 +215,7 @@ def operateDoor(id):
 
 def logTime(status, id):
     # Get the current time and date as a string
-    currentTime = strftime("%a, %d %b %Y %H:%M:%S", gmtime())
+    currentTime = strftime("%a, %d %b %Y, %H:%M:%S", gmtime())
 
     # Connect to the database
     conn = sqlite3.connect(dbDir)

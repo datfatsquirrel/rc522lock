@@ -5,11 +5,11 @@ import sqlite3
 import os
 
 # Join the current dir with database dir, store in variable for connection
-databasePath = os.path.join(os.path.dirname(__file__), "../resources/userDB.db")
+databasePath = os.path.join(os.path.dirname(__file__), "../resources/main.db")
 
 def createDatabase():
     # Connect to db
-    conn = sqlite3.connect("databasePath")
+    conn = sqlite3.connect(databasePath)
     print ("Opened database successfully")
 
     # Create table within db
@@ -24,3 +24,5 @@ def createDatabase():
 
     # Close db connection
     conn.close()
+
+createDatabase()
