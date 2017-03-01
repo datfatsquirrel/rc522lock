@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request
 import sqlite3
-
+dbDir = os.path.join(os.path.dirname(__file__), "../resources/main.db")
 app = Flask(__name__)
 
 @app.route('/')
@@ -16,7 +16,7 @@ def home():
 
 @app.route('/logs')
 def logs():
-	conn = sqlite3.connect('main.db')
+	conn = sqlite3.connect(dbDir)
 	conn.text_factory = str
 	curs = conn.cursor()
 	uids = curs.execute("SELECT UID FROM LOGS").fetchall()
