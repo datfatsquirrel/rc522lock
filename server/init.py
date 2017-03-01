@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, request
-import sqlite3
+import sqlite3, os
 dbDir = os.path.join(os.path.dirname(__file__), "../resources/main.db")
 app = Flask(__name__)
 
