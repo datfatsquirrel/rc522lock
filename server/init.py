@@ -3,14 +3,14 @@ import sqlite3
 dbDir = os.path.join(os.path.dirname(__file__), "../resources/main.db")
 app = Flask(__name__)
 
-@app.route('/')
+'''@app.route('/')
 def index():
 	if 'username' in session:
     	return redirect(url_for('home'))
 	else
 		return redirect(url_for('login'))
-
-@app.route('/home')
+'''
+@app.route('/')
 def home():
 	return render_template('index.html', title = 'RFID Door Lock')
 
@@ -26,7 +26,7 @@ def logs():
 	listLen = len(uids)
 	return render_template('logs.html', title = 'View Logs', uids = uids, times = times, status = status, success = success, listLen = listLen)
 
-@app.route('/login')
+'''@app.route('/login')
 def login():
 	password = request.form['login']
 	if password = 'admin'
@@ -37,6 +37,6 @@ def login():
 def logout():
    session.pop('username', None)
    return redirect(url_for('index'))
-
+'''
 if __name__ == '__main__':
 	app.run(debug=True, host="0.0.0.0")
