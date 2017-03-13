@@ -70,13 +70,13 @@ def scan():
                         sleep(2)
 
         	    	# Take the current time (seconds since Jan 1st 1970) and store as a temp value
-        	    	tempTimeVal = time.time()
+        	    	tempTimeVal = time()
 
         	    	# Set the default mode to lock automatically after the door is unlocked
         	    	changeState = True
 
         	    	# Create a loop which runs for 0.5 seconds to scan for RFID signals
-        	    	while (time.time() - tempTimeVal) < 0.5:
+        	    	while (time() - tempTimeVal) < 0.5:
         	    	    (status,TagType) = reader.MFRC522_Request(reader.PICC_REQIDL)
 
         		    # Check if card is still present
