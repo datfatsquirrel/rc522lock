@@ -220,7 +220,7 @@ def operateDoor(ID, success):
 
 def logTime(ID, success):
     # Get the current time and date as a string
-    currentTime = strftime("%a, %d %b %Y, %H:%M:%S", gmtime())
+    currentTime = strftime("%a %d %b %Y %H:%M:%S", gmtime())
     currentTime = str(currentTime)
     ID = str(ID)
     success = str(success)
