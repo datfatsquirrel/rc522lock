@@ -171,7 +171,6 @@ def masterCard():
                 if returnValue is not None:
                     print "Remove."
                     rmUID(uidStr)
-                    continueLoop = False
                     success = "Added new tag"
                     logTime(uidStr, success)
 
@@ -179,7 +178,6 @@ def masterCard():
                 else:
                     print "Add."
                     addUID(uidStr)
-                    continueLoop = False
                     success = "Removed tag"
                     logTime(uidStr, success)
     print "Master card deactivated."
