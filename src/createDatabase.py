@@ -15,6 +15,8 @@ def createDatabase():
     # Create table within db
     conn.execute("CREATE TABLE USERS (ID INT PRIMARY KEY);")
 
+    conn.execute("CREATE TABLE LOGS (UID INT PRIMARY KEY, TIME VARCAR(26), SUCCESS TEXT)")
+
     # Save changes
     conn.commit()
     print ("Table created successfully")
