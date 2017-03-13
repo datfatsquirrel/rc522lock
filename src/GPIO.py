@@ -6,7 +6,6 @@ dbDir = os.path.join(os.path.dirname(__file__), "../resources/main.db")
 
 # Allows me to create delays and get the current time when gathering data for database
 from time import time, sleep, gmtime, strftime
-import locale
 
 # Database library
 import sqlite3
@@ -50,7 +49,7 @@ def scan():
             if uidStr == "185157210202":
                 # Tag was master card
                 success = "Master card"
-                time.sleep(2)
+                sleep(2)
                 masterCard()
             else:
                 isValid = queryUID(uidStr)
@@ -68,7 +67,7 @@ def scan():
         	    state = GPIO.input(5)
         	    if state == 0:
     	    	    # Delay to scan after 2 seconds to see if the RFID signal is still present
-                        time.sleep(2)
+                        sleep(2)
 
         	    	# Take the current time (seconds since Jan 1st 1970) and store as a temp value
         	    	tempTimeVal = time.time()
@@ -102,16 +101,16 @@ def scan():
                     # Flash the red LED to indicate a failed attempt
                     while flash != 0:
                         GPIO.output(33, GPIO.HIGH)
-                        time.sleep(0.1)
+                        sleep(0.1)
                         GPIO.output(33, GPIO.LOW)
-                        time.sleep(0.1)
+                        sleep(0.1)
 			flash -= 1
 			print "During flash"
                     if locked == 1:
                         GPIO.output(33, GPIO.HIGH)
 
         # Delay for 3 seconds before the script can be run again
-	    time.sleep(2)
+	    sleep(2)
 
 def queryUID(ID):
     # Connect to the user database
