@@ -48,8 +48,7 @@ def scan():
 
             if uidStr == "185157210202":
                 # Tag was master card
-                success = "Master card"
-                sleep(2)
+                sleep(1)
                 masterCard()
             else:
                 isValid = queryUID(uidStr)
@@ -173,12 +172,16 @@ def masterCard():
                     print "Remove."
                     rmUID(uidStr)
                     continueLoop = False
+                    success = "Added new tag"
+                    logTime(uidStr, success)
 
                 # If the UID is not in the database, add it
                 else:
                     print "Add."
                     addUID(uidStr)
                     continueLoop = False
+                    success = "Removed tag"
+                    logTime(uidStr, success)
     print "Master card deactivated."
 
 def addUID(ID):
