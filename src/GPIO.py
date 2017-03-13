@@ -209,14 +209,12 @@ def operateDoor(ID, success):
         GPIO.output(37, GPIO.LOW)
         GPIO.output(33, GPIO.HIGH)
         GPIO.output(5, GPIO.HIGH)
-        logTime(ID, success)
 
     # Unlock door, turn green LED on and red LED off
     elif state == 1:
         GPIO.output(37, GPIO.HIGH)
         GPIO.output(33, GPIO.LOW)
         GPIO.output(5, GPIO.LOW)
-        logTime(ID, success)
 
 def logTime(ID, success):
     # Get the current time and date as a string
