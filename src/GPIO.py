@@ -230,9 +230,9 @@ def logTime(ID, success):
     print currentTime
 
     # Insert UID, time and status of the door into database
-    randomString = "INSERT INTO LOGS (UID, TIME, SUCCESS) VALUES ("+ID+", "+currentTime+", "+success+")"
+    randomString = "INSERT INTO LOGS (UID, TIME, SUCCESS) VALUES (?, ?, ?)"
     print randomString
-    curs.execute(randomString)
+    curs.execute(randomString, (ID, currentTime, success))
     curs.commit()
     conn.close()
 scan()
