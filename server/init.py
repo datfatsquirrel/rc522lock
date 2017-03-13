@@ -21,7 +21,7 @@ def logs():
 	curs = conn.cursor()
 	uids = curs.execute("SELECT UID FROM LOGS").fetchall()
 	times = curs.execute("SELECT TIME FROM LOGS").fetchall()
-	success = curs.execute("SELECT SUCCESS FROM LOGS")
+	success = curs.execute("SELECT SUCCESS FROM LOGS").fetchall()
 	listLen = len(uids)
 	return render_template('logs.html', title = 'View Logs', uids = uids, times = times, success = success, listLen = listLen)
 
