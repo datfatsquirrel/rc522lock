@@ -21,16 +21,15 @@ def logs():
 	curs = conn.cursor()
 	uids = curs.execute("SELECT UID FROM LOGS").fetchall()
 	times = curs.execute("SELECT TIME FROM LOGS").fetchall()
-	status = curs.execute("SELECT STATUS FROM LOGS")
 	success = curs.execute("SELECT SUCCESS FROM LOGS")
 	listLen = len(uids)
-	return render_template('logs.html', title = 'View Logs', uids = uids, times = times, status = status, success = success, listLen = listLen)
+	return render_template('logs.html', title = 'View Logs', uids = uids, times = times, success = success, listLen = listLen)
 
 '''@app.route('/login')
 def login():
 	password = request.form['login']
 	if password = 'admin'
-		
+
 
 
 @app.route('/logout')
