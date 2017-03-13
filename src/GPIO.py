@@ -220,7 +220,7 @@ def operateDoor(ID, success):
 
 def logTime(ID, success):
     # Get the current time and date as a string
-    currentTime = strftime("%a %d %b %Y %H:%M:%S", gmtime())
+    currentTime = strftime("%a, %d %b %Y, %H:%M:%S", gmtime())
     currentTime = str(currentTime)
     ID = str(ID)
     success = str(success)
@@ -233,6 +233,6 @@ def logTime(ID, success):
     randomString = "INSERT INTO LOGS (UID, TIME, SUCCESS) VALUES (?, ?, ?)"
     print randomString
     curs.execute(randomString, (ID, currentTime, success))
-    curs.commit()
+    conn.commit()
     conn.close()
 scan()
