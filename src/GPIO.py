@@ -33,7 +33,7 @@ def scan():
         # Sends a request to the reader to see if a card is present
         (status,TagType) = reader.MFRC522_Request(reader.PICC_REQIDL)
 	print "Hi there 2"
-        
+
 	# If no card is found then it will continue the loop
 	# If a card is present the program will run the following 'if' statement
         if status == reader.MI_OK:
@@ -60,7 +60,7 @@ def scan():
                     success = "True"
 
                     # Log the time at which the tag was used
-                    logTime(id, success)
+                    logTime(uidStr, success)
 		    print "Hi there 5"
         	    # Change the state of the door to it's opposite state
         	    operateDoor(uidStr, success)
@@ -113,13 +113,13 @@ def scan():
         # Delay for 3 seconds before the script can be run again
 	    time.sleep(2)
 
-def queryUID(id):
+def queryUID(ID):
     # Connect to the user database
     conn = sqlite3.connect(dbDir)
     curs = conn.cursor()
 
     # Check if the UID exists in the database
-    returnValue = curs.execute("SELECT ID FROM USERS WHERE ID = "+id).fetchone()
+    returnValue = curs.execute("SELECT ID FROM USERS WHERE ID = "+ID).fetchone()
     conn.close()
 
     # Returns true if valid, false if invalid
@@ -182,27 +182,27 @@ def masterCard():
                     continueLoop = False
     print "Master card deactivated."
 
-def addUID(id):
+def addUID(ID):
     # Connect to the database
     conn = sqlite3.connect(dbDir)
     curs = conn.cursor()
 
     # Insert the UID into the database
-    curs.execute("INSERT INTO USERS (ID) VALUES ("+id+")")
+    curs.execute("INSERT INTO USERS (ID) VALUES ("+ID+")")
     conn.commit()
     conn.close()
 
-def rmUID(id):
+def rmUID(ID):
     # Connect to the database
     conn = sqlite3.connect(dbDir)
     curs = conn.cursor()
 
     # Remove the UID from the database
-    curs.execute("DELETE FROM USERS WHERE id = "+id)
+    curs.execute("DELETE FROM USERS WHERE id = "+ID)
     conn.commit()
     conn.close()
 
-def operateDoor(id, success):
+def operateDoor(ID, success):
     state = GPIO.input(5)
 
     # Lock door, turn green LED off and red LED on
@@ -210,20 +210,20 @@ def operateDoor(id, success):
         GPIO.output(37, GPIO.LOW)
         GPIO.output(33, GPIO.HIGH)
         GPIO.output(5, GPIO.HIGH)
-        logTime(id, success)
+        logTime(ID, success)
 
     # Unlock door, turn green LED on and red LED off
     elif state == 1:
         GPIO.output(37, GPIO.HIGH)
         GPIO.output(33, GPIO.LOW)
         GPIO.output(5, GPIO.LOW)
-        logTime(id, success)
+        logTime(ID, success)
 
-def logTime(id, success):
+def logTime(ID, success):
     # Get the current time and date as a string
     currentTime = strftime("%a, %d %b %Y, %H:%M:%S", gmtime())
     currentTime = str(currentTime)
-    id = str(id)
+    ID = str(ID)
     success = str(success)
     # Connect to the database
     conn = sqlite3.connect(dbDir)
@@ -231,7 +231,7 @@ def logTime(id, success):
     print currentTime
 
     # Insert UID, time and status of the door into database
-    randomString = "INSERT INTO LOGS (UID, TIME, SUCCESS) VALUES ("+id+", "+currentTime+", "+success+")"
+    randomString = "INSERT INTO LOGS (UID, TIME, SUCCESS) VALUES ("+ID+", "+currentTime+", "+success+")"
     print randomString
     curs.execute(randomString)
     curs.commit()
